@@ -1,112 +1,53 @@
 const Discord = require("discord.js");
-const colors = require("./colors.json");
-const { token, prefix } = require("./config.json");
-const bot = new Discord.Client();
+const client = new Discord.Client();
 
-//welcome
-bot.on("guildMemberAdd", (member) => {
-  const channel = member.guild.channels.find(
-    (channel) => channel.name === "welcome"
-  );
+const { PREFIX, TOKEN, VERSION } = require("./config.json");
 
-  if (!channel) return;
-
-  message.channel.send(
-    `Welcome To Our Server ${member}, Please See The Rules In The #Rules Channel`
-  );
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 
-//bye bye
-
-bot.on("guildMemberDelete", (member) => {
-  const channel = member.guild.channels.find(
-    (channel) => channel.name === "welcome"
-  );
-
-  if (!channel) return;
-
-  message.channel.send(`${member}, Went Bye Bye :(`);
-});
-
-//clear
-bot.on("message", (message) => {
-  if (message.content === prefix + "clear") {
-    message.channel.bulkDelete(100);
-    message.channel.send({
+client.on("message", (msg) => {
+  if (msg.content === "ping") {
+    msg.channel.send({
       embed: {
-        title: "Bulk Delete",
-        color: 3447003,
-        description: "Deleted Messages",
+        color: "#f5f5f5",
+
+        title: "Pong!",
+
+        description: "Ping Pong Ping Pong!",
       },
     });
   }
 });
 
-//help
-bot.on("message", (message) => {
-  if (message.content === prefix + "help") {
-    message.channel.send({
-      embed: {
-        color: 3447003,
-        author: {
-          name: bot.user.username,
-          icon: bot.user.avatarURL,
-        },
-        title: "Help",
-        thumbnail: "bot.user.avatarURL",
-        url: "https://www.youtube.com/channel/UCMxl3ZqLxKMbWmUuYGDNHCg",
-        description: "Commands - CLEAR | .clear    POLL | .poll [ Question ]",
-        // fields: [
-        //   {
-        //     name: "Regular field title",
-        //     value: "Some value here",
-        //   },
-        //   {
-        //     name: "\u200b",
-        //     value: "\u200b",
-        //     inline: false,
-        //   },
-        //   {
-        //     name: "Inline field title",
-        //     value: "Some value here",
-        //     inline: true,
-        //   },
-        //   {
-        //     name: "Inline field title",
-        //     value: "Some value here",
-        //     inline: true,
-        //   },
-        //   {
-        //     name: "Inline field title",
-        //     value: "Some value here",
-        //     inline: true,
-        //   },
-        // ],
-        timestamp: new Date(),
-        footer: {
-          text: "© UNS Storm",
-        },
-      },
+client.on("message", (msg) => {
+  if (msg.content === "Stupid Billy") {
+    msg.channel.send("ok :(");
+  }
+});
+
+client.on("message", (msg) => {
+  if (msg.content === "Billy is dumb") {
+    msg.channel.send("😢").then((messageReaction) => {
+      messageReaction.react("☹️");
     });
   }
 });
 
-//poll
-bot.on("message", (message) => {
-  const args = message.content.slice(prefix.length).split(/ +/);
+client.on("message", (message) => {
+  const args = message.content.slice(PREFIX.length).split(/ +/);
 
   switch (args[0]) {
     case "poll":
       if (!args[1]) {
-        message.channel
-          .send({
-            embed: {
-              title: "POLL",
-              color: "#00ff00",
-              description: "A Simple Poll usage: .poll [Question]",
-            },
-          })
-          .then(message.channel.delete(1));
+        message.channel.send({
+          embed: {
+            title: "POLL",
+            color: "#00ff00",
+            description: "A Simple Poll usage: .poll [Question]",
+          },
+        });
 
         break;
       }
@@ -129,9 +70,68 @@ bot.on("message", (message) => {
       break;
   }
 });
-
-bot.on("ready", () => {
-  console.log("active");
+client.on("message", (msg) => {
+  if (msg.content === ".avatar") {
+    msg.channel.send({
+      embed: {
+        Title: "I heared you want to see your profile picture",
+        description: `${msg.author.displayAvatarURL()}`,
+      },
+    });
+  }
 });
 
-bot.login(token);
+client.on("message", (msg) => {
+  if (msg.content === ".version") {
+    msg.channel.send({
+      embed: {
+        Title: `Version is ${VERSION}`,
+      },
+    });
+  }
+});
+
+client.on("message", (msg) => {
+  if (msg.content === ".help") {
+    msg.channel
+      .send({
+        embed: {
+          color: 3447003,
+          author: {
+            name: client.user.username,
+          },
+          title: `weewoo weewoo`,
+          description: `${msg.author.username}, Help is on its way! Just stay calm.`,
+          timestamp: new Date(),
+          footer: {
+            text: "© billy bot",
+          },
+        },
+      })
+      .then((messageReaction) => {
+        messageReaction.react("🚑");
+      });
+  }
+});
+
+client.on("message", (msg) => {
+  if (msg.content === ".clear") {
+    // Bulk delete messages
+    msg.channel.bulkDelete(100);
+    msg.channel
+      .send({
+        embed: {
+          color: 3447003,
+          title: `Cleared Messages`,
+          description: `Cleared 100 Messages, ${msg.author.username}`,
+        },
+      })
+      .then((messageReaction) => {
+        messageReaction.react("👍");
+      });
+  }
+});
+
+
+
+client.login(TOKEN);
