@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const { PREFIX, TOKEN, VERSION } = require("./config.json");
+const { PREFIX, TOKEN, VERSION } = require("./.gitingore/config.json");
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -131,7 +131,5 @@ client.on("message", (msg) => {
       });
   }
 });
-
-
 
 client.login(TOKEN);
