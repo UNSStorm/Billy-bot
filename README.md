@@ -6,4 +6,4 @@
 
 #### POLL - Ask Questions | usage : .poll { question }
 
-#### Avatar - See Your Avatar | isage : .avatar
+#### Avatar - See Your Avatar | usage : .avatar
