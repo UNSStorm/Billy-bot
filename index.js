@@ -5,6 +5,7 @@ const { PREFIX, TOKEN, VERSION } = require("./.gitignore/config.json");
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  client.user.setPresence("Ender MC");
 });
 
 client.on("message", (msg) => {
@@ -27,7 +28,6 @@ client.on("message", (msg) => {
 
 client.on("message", (message) => {
   const args = message.content.slice(PREFIX.length).split(/ +/);
-
   switch (args[0]) {
     case "poll":
       if (!args[1]) {
@@ -74,7 +74,7 @@ client.on("message", (msg) => {
       embed: {
         color: "#5dbcd2",
         Title: "I heared you want to see your profile picture",
-        image: `${msg.author.displayAvatarURL()}`,
+        thumbnail: `${msg.author.displayAvatarURL()}`,
         timestamp: new Date(),
         footer: {
           text: "© billy bot",
@@ -155,24 +155,26 @@ client.on("message", (msg) => {
 });
 
 client.on("message", (msg) => {
-  if (msg.content === ".clear") {
-    // Bulk delete messages
-    msg.channel.bulkDelete(100);
-    msg.channel
-      .send({
-        embed: {
-          color: 3447003,
-          title: `Cleared Messages`,
-          description: `Cleared 100 Messages, ${msg.author.username}`,
-          timestamp: new Date(),
-          footer: {
-            text: "© billy bot",
+  if (msg.member.hasPermission("MANAGE_MESSAGES")) {
+    if (msg.content === ".clear") {
+      // Bulk delete messages
+      msg.channel.bulkDelete(100);
+      msg.channel
+        .send({
+          embed: {
+            color: 3447003,
+            title: `Cleared Messages`,
+            description: `Cleared 100 Messages, ${msg.author.username}`,
+            timestamp: new Date(),
+            footer: {
+              text: "© billy bot",
+            },
           },
-        },
-      })
-      .then((messageReaction) => {
-        messageReaction.react("👍");
-      });
+        })
+        .then((messageReaction) => {
+          messageReaction.react("👍");
+        });
+    }
   }
 });
 
