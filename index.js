@@ -16,21 +16,11 @@ client.on("message", (msg) => {
         title: "Pong!",
 
         description: "Ping Pong Ping Pong!",
+        timestamp: new Date(),
+        footer: {
+          text: "© billy bot",
+        },
       },
-    });
-  }
-});
-
-client.on("message", (msg) => {
-  if (msg.content === "Stupid Billy") {
-    msg.channel.send("ok :(");
-  }
-});
-
-client.on("message", (msg) => {
-  if (msg.content === "Billy is dumb") {
-    msg.channel.send("😢").then((messageReaction) => {
-      messageReaction.react("☹️");
     });
   }
 });
@@ -46,6 +36,10 @@ client.on("message", (message) => {
             title: "POLL",
             color: "#00ff00",
             description: "A Simple Poll usage: .poll [Question]",
+            timestamp: new Date(),
+            footer: {
+              text: "© billy bot",
+            },
           },
         });
 
@@ -59,6 +53,10 @@ client.on("message", (message) => {
             title: "📊 Question: " + "***" + msgArgs + "***",
             color: "#6cc5d3",
             image: "",
+            timestamp: new Date(),
+            footer: {
+              text: "© billy bot",
+            },
           },
         })
         .then((messageReaction) => {
@@ -74,43 +72,85 @@ client.on("message", (msg) => {
   if (msg.content === ".avatar") {
     msg.channel.send({
       embed: {
+        color: "#5dbcd2",
         Title: "I heared you want to see your profile picture",
-        description: `${msg.author.displayAvatarURL()}`,
-      },
-    });
-  }
-});
-
-client.on("message", (msg) => {
-  if (msg.content === ".version") {
-    msg.channel.send({
-      embed: {
-        Title: `Version is ${VERSION}`,
-      },
-    });
-  }
-});
-
-client.on("message", (msg) => {
-  if (msg.content === ".help") {
-    msg.channel
-      .send({
-        embed: {
-          color: 3447003,
-          author: {
-            name: client.user.username,
-          },
-          title: `weewoo weewoo`,
-          description: `${msg.author.username}, Help is on its way! Just stay calm.`,
-          timestamp: new Date(),
-          footer: {
-            text: "© billy bot",
-          },
+        image: `${msg.author.displayAvatarURL()}`,
+        timestamp: new Date(),
+        footer: {
+          text: "© billy bot",
         },
-      })
-      .then((messageReaction) => {
-        messageReaction.react("🚑");
-      });
+      },
+    });
+  }
+});
+
+client.on("message", (msg) => {
+  const args = msg.content.slice(PREFIX.length).split(/ +/);
+
+  switch (args[0]) {
+    case "help":
+      if (!args[1]) {
+        msg.channel
+          .send({
+            embed: {
+              color: 3447003,
+              author: {
+                name: client.user.username,
+              },
+              title: `weewoo weewoo`,
+              description: `${msg.author.username}, Help is on its way! Just stay calm.`,
+              timestamp: new Date(),
+              footer: {
+                text: "© billy bot",
+              },
+            },
+          })
+          .then((messageReaction) => {
+            messageReaction.react("🚑");
+          });
+
+        break;
+      }
+      let msgArgs = args.splice(1).join(" ");
+
+      if (msgArgs === "commands") {
+        msg.channel
+          .send({
+            embed: {
+              title: `${msgArgs}`,
+              color: "#ff0000",
+              description: `CLEAR - Clear Messages | usage : .clear
+              POLL - Ask Questions | usage : .poll { question }
+              Avatar - See Your Avatar | usage : .avatar`,
+              image: "",
+              timestamp: new Date(),
+              footer: {
+                text: "© billy bot",
+              },
+            },
+          })
+          .then((messageReaction) => {
+            messageReaction.react("👏");
+          });
+      } else {
+        msg.channel
+          .send({
+            embed: {
+              color: "#fbff00",
+              title: `Try Using .help commands`,
+              image: "",
+              timestamp: new Date(),
+              footer: {
+                text: "© billy bot",
+              },
+            },
+          })
+          .then((messageReaction) => {
+            messageReaction.react("😊");
+          });
+      }
+
+      break;
   }
 });
 
@@ -124,6 +164,10 @@ client.on("message", (msg) => {
           color: 3447003,
           title: `Cleared Messages`,
           description: `Cleared 100 Messages, ${msg.author.username}`,
+          timestamp: new Date(),
+          footer: {
+            text: "© billy bot",
+          },
         },
       })
       .then((messageReaction) => {
